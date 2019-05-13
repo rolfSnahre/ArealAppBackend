@@ -1,0 +1,1 @@
+{"packagePrefix":"com.serverless.demo","lastDeploymentRegionId":"eu-west-2","regionConfig":{"eu-west-2":{"bucket":"arealapp","stack":"ArealAppBackend-stack"}}}
