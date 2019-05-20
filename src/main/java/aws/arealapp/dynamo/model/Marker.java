@@ -5,53 +5,60 @@ import java.util.Map;
 
 public class Marker {
 	
-	double latitude;
-	double longditude;
+	String key;
 	
-	String pinColour;
+	String pinColor;
 	
-	Map<String, Object> info;
+	Map<String, Double> coordinate;
+	
+	Map<String, Object> markerData;
+	
+	public Marker() {
+		
+	}
 
-	public Marker(double latitude, double longditude, 
-			String pinColour, Map<String, Object> info) {
+	public Marker(String markerId, String pinColor,
+			Map<String, Double> coordinate, Map<String, Object> markerData) {
 		super();
-		this.latitude = latitude;
-		this.longditude = longditude;
-		this.pinColour = pinColour;
-		this.info = info;
+		this.key = markerId;
+		this.pinColor = pinColor;
+		this.coordinate = coordinate;
+		this.markerData = markerData;
 	}
 
-	public double getLatitude() {
-		return latitude;
+	public String getKey() {
+		return key;
 	}
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+	public void setKey(String markerId) {
+		this.key = markerId;
 	}
 
-	public double getLongditude() {
-		return longditude;
+	public String getPinColor() {
+		return pinColor;
 	}
 
-	public void setLongditude(double longditude) {
-		this.longditude = longditude;
+	public void setPinColor(String pinColor) {
+		this.pinColor = pinColor;
 	}
 
-	public String getPinColour() {
-		return pinColour;
+	public Map<String, Double> getcoordinate() {
+		return coordinate;
 	}
 
-	public void setPinColour(String pinColour) {
-		this.pinColour = pinColour;
+	public void setcoordinate(Map<String, Double> coordinate) {
+		this.coordinate = coordinate;
 	}
 
-	public Map<String, Object> getInfo() {
-		return info;
+	public Map<String, Object> getMarkerData() {
+		return markerData;
 	}
 
-	public void setInfo(Map<String, Object> info) {
-		this.info = info;
+	public void setMarkerData(Map<String, Object> markerData) {
+		this.markerData = markerData;
 	}
 
+	
+	
 	
 }

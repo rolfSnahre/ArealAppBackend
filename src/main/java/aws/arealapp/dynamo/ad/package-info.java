@@ -1,0 +1,1 @@
+package aws.arealapp.dynamo.ad;

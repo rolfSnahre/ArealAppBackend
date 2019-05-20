@@ -1,15 +1,15 @@
 package aws.arealapp.dynamo.model;
 
-public class Coords {
+public class Coord {
 	double latitude;
 	double longditude;
 	
-	public Coords() {
+	public Coord() {
 		latitude = 60;
 		longditude = 5;
 	}
 
-	public Coords(double latitude, double longditude) {
+	public Coord(double latitude, double longditude) {
 		super();
 		this.latitude = latitude;
 		this.longditude = longditude;
