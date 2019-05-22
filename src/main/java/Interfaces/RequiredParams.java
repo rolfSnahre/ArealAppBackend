@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface Params {
+public interface RequiredParams {
 	
 	public String getPk();
 	

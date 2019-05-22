@@ -3,16 +3,16 @@ package aws.arealapp.dynamo.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import Interfaces.Params;
+import Interfaces.RequiredParams;
 
-public class AdParams implements Params {
+public class AdParams implements RequiredParams {
 	
 	public static final String pk = "adId";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};
 
 	public static final String[] stringParams  = 
-		{"category", "place", "contact", "email", "number", "description", "date"};
+		{"category", "place", "contact", "email", "number", "description"};
 	
 	public static final String[] numParams = {};
 	

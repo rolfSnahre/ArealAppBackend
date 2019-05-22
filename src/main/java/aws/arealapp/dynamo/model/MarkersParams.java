@@ -3,9 +3,9 @@ package aws.arealapp.dynamo.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import Interfaces.Params;
+import Interfaces.RequiredParams;
 
-public class MarkersParams implements Params {
+public class MarkersParams implements RequiredParams {
 public static final String pk = "markerId";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};

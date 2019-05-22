@@ -20,20 +20,20 @@ import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
 
-import Interfaces.Params;
+import Interfaces.RequiredParams;
 import aws.arealapp.dynamo.model.Marker;
 import aws.arealapp.dynamo.model.AreaParams;
 
 public class DatabaseOperations {
 	
-	public Object addObjRandId(Map<String, Object> input, String tableName, Params paramObj) {
+	public Object addObjRandId(Map<String, Object> input, String tableName, RequiredParams paramObj) {
 		Random r = new Random();
 		String pk = String.valueOf(r.nextLong());
 		
 		return addObj(pk, input, tableName, paramObj);
 	}
 		
-	public Object addObj(String pk, Map<String, Object> input, String tableName, Params paramObj) {
+	public Object addObj(String pk, Map<String, Object> input, String tableName, RequiredParams paramObj) {
 		
 		Table table = DUtil.getTable(tableName);
 		
@@ -86,7 +86,7 @@ public class DatabaseOperations {
     	}
 	}
 	
-	public Object  getAll(Map<String, Object> input, String tableName, Params paramObj) {
+	public Object  getAll(Map<String, Object> input, String tableName, RequiredParams paramObj) {
 		Gson gson = new Gson();
 		
 		Table table = DUtil.getTable(tableName);
@@ -94,28 +94,17 @@ public class DatabaseOperations {
 		ScanSpec spec = new ScanSpec();
 				//withProjectionExpression("coordinate, pinColor, StringData");
 		try {
-			ItemCollection<ScanOutcome> mCol = table.scan(spec);
-			Iterator<Item> mIter = mCol.iterator();
-
-			List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
-			Map<String, Object> itemAsMap;
+			ItemCollection<ScanOutcome> result = table.scan(spec);
 			
-			while(mIter.hasNext()) {
-				Item item = mIter.next();
+			return DUtil.itemCollectToMapList(result);
 
-				itemAsMap = item.asMap();
-				
-				items.add(itemAsMap);
-			}
-
-			return items;
 		}catch(Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
 		}
 	}
 	
-	public Object deleteObj(String id, String tableName, Params paramObj) {
+	public Object deleteObj(String id, String tableName, RequiredParams paramObj) {
 		Table table = DUtil.getTable(tableName);
 
         DeleteItemSpec spec = new DeleteItemSpec().
@@ -133,7 +122,7 @@ public class DatabaseOperations {
         
 	} 
 	
-	public Object getObj(String id, String tableName, Params paramObj) {
+	public Object getObj(String id, String tableName, RequiredParams paramObj) {
 		 
 		Table table = DUtil.getTable(tableName);
 

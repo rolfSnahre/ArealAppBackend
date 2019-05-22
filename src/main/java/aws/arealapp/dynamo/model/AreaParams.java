@@ -3,9 +3,9 @@ package aws.arealapp.dynamo.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import Interfaces.Params;
+import Interfaces.RequiredParams;
 
-public class AreaParams implements Params {
+public class AreaParams implements RequiredParams {
 	public static final String pk = "areaId";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};

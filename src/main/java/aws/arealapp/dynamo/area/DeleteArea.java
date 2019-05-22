@@ -13,7 +13,7 @@ public class DeleteArea implements RequestHandler<String, Object>{
 	public Object handleRequest(String id, Context context) {
 		
 		DatabaseOperations databaseOp = new DatabaseOperations();
-		
+
 		return databaseOp.deleteObj(id, "Areas", new AreaParams());
 		
 	}
