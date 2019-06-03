@@ -2,23 +2,10 @@ package aws.arealapp.dynamo.marker;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
 import aws.arealapp.dynamo.model.*;
-import aws.arealapp.dynamo.util.DUtil;
 import aws.arealapp.dynamo.util.DatabaseOperations;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.*;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
-import com.amazonaws.services.dynamodbv2.document.Table;
 
 
 public class AddMarker implements RequestHandler<Map<String, Object>, Object> {

@@ -1,39 +1,33 @@
 package aws.arealapp.dynamo.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.ItemCollection;
-import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.ScanOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
-import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
 
-import Interfaces.RequiredParams;
-import aws.arealapp.dynamo.model.Marker;
-import aws.arealapp.dynamo.model.AreaParams;
+import Interfaces.Params;
+import Interfaces.ParamsWithSK;
 
 public class DatabaseOperations {
 	
-	public Object addObjRandId(Map<String, Object> input, String tableName, RequiredParams paramObj) {
+	public Object addObjRandId(Map<String, Object> input, String tableName, Params paramObj) {
 		Random r = new Random();
-		String pk = String.valueOf(r.nextLong());
-		
+		//String pk = String.valueOf(r.nextLong());
+		String pk = "-8631806665401014697";
 		return addObj(pk, input, tableName, paramObj);
 	}
 		
-	public Object addObj(String pk, Map<String, Object> input, String tableName, RequiredParams paramObj) {
+	public Object addObj(String pk, Map<String, Object> input, String tableName, Params paramObj) {
 		
 		Table table = DUtil.getTable(tableName);
 		
@@ -86,13 +80,11 @@ public class DatabaseOperations {
     	}
 	}
 	
-	public Object  getAll(Map<String, Object> input, String tableName, RequiredParams paramObj) {
-		Gson gson = new Gson();
+	public Object  getAll(Map<String, Object> input, String tableName, Params paramObj) {
 		
 		Table table = DUtil.getTable(tableName);
 
 		ScanSpec spec = new ScanSpec();
-				//withProjectionExpression("coordinate, pinColor, StringData");
 		try {
 			ItemCollection<ScanOutcome> result = table.scan(spec);
 			
@@ -104,31 +96,35 @@ public class DatabaseOperations {
 		}
 	}
 	
-	public Object deleteObj(String id, String tableName, RequiredParams paramObj) {
+	public Object deleteObj(String id, String tableName, Params paramObj)throws Exception {
 		Table table = DUtil.getTable(tableName);
 
         DeleteItemSpec spec = new DeleteItemSpec().
         		withPrimaryKey(paramObj.getPk(), id);
+        		
         
-        try {
-            DeleteItemOutcome outcome = table.deleteItem(spec);
-            
-            return outcome;
-        }
-        catch (Exception e) {
-        	e.printStackTrace();
-            return e.getMessage();
-        }
+        DeleteItemOutcome outcome = table.deleteItem(spec);
         
+        return outcome;
 	} 
 	
-	public Object getObj(String id, String tableName, RequiredParams paramObj) {
+	public Object deleteObjWithSortKey(String pk, String sk, String tableName, ParamsWithSK paramObj) throws Exception{
+		Table table = DUtil.getTable(tableName);
+
+        DeleteItemSpec spec = new DeleteItemSpec().
+        		withPrimaryKey(paramObj.getPk(), pk, paramObj.getSk(), sk);
+        		
+        
+        DeleteItemOutcome outcome = table.deleteItem(spec);
+        
+        return outcome;
+	}
+	
+	public Object getObj(String id, String tableName, Params paramObj) {
 		 
 		Table table = DUtil.getTable(tableName);
 
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(paramObj.getPk(), id);
-        
-        Gson gson = new Gson();
         
         try {
             Item outcome = table.getItem(spec);
@@ -148,5 +144,29 @@ public class DatabaseOperations {
         }
 	}
 	
+	public Object getObjectWithKeyValue(String tableName, String key, String value) {
+		Table table = DUtil.getTable("Ads");
+		
+		Map<String, Object> valueMap = new HashMap<String, Object>();
+		
+		valueMap.put(":key", value);
+		
+		//lager scanne spesifikasjon objeckt
+		//Spesifiserer at man bare skal ha elementer med som har en parameter med navnet key og verdien value so er sendt inn
+		ScanSpec spec = new ScanSpec()
+				.withFilterExpression(key+"= :key")
+				.withValueMap(valueMap);
+		
+		try{
+			//bruker scanne spesifikasjons objektet i scan opperasjon
+			ItemCollection<ScanOutcome> outcome = table.scan(spec);
+			
+			return DUtil.itemCollectToMapList(outcome);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
 	
 }

@@ -3,11 +3,14 @@ package aws.arealapp.dynamo.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import Interfaces.RequiredParams;
+import Interfaces.Params;
+import Interfaces.ParamsWithSK;
 
-public class AdParams implements RequiredParams {
+public class AdParams implements ParamsWithSK {
 	
 	public static final String pk = "adId";
+	
+	public static final String sk = "date";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};
 
@@ -55,6 +58,10 @@ public class AdParams implements RequiredParams {
 	public String getPk() {
 		// TODO Auto-generated method stub
 		return pk;
+	}
+	
+	public String getSk() {
+		return sk;
 	}
 
 

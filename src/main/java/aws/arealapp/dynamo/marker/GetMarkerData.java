@@ -9,7 +9,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 
-import aws.arealapp.dynamo.model.*;
 import aws.arealapp.dynamo.util.DUtil;
 
 public class GetMarkerData implements RequestHandler<String, Object> {

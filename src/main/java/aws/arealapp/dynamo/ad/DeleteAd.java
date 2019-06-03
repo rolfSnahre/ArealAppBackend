@@ -12,6 +12,12 @@ public Object handleRequest(String id, Context context) {
 		
 		DatabaseOperations databaseOp = new DatabaseOperations();
 		
-		return databaseOp.deleteObj(id, "Ads", new AdParams());
+		try {
+			return databaseOp.deleteObj(id, "Ads", new AdParams());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
 	}
 }

@@ -3,21 +3,21 @@ package aws.arealapp.dynamo.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import Interfaces.RequiredParams;
+import Interfaces.Params;
 
-public class AreaParams implements RequiredParams {
+public class AreaParams implements Params {
 	public static final String pk = "areaId";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};
 
 	public static final String[] stringParams  = 
-		{"kontakt", "email", "number", "description", "date"};
+		{"kontakt", "email", "number", "description", "date", "pinColor"};
 	
 	public static final String[] numParams = {};
 	
 	public static final String[] boolParams = {};
 	
-	public static final String[] mapParams = {"user"};
+	public static final String[] mapParams = {"user", "coordinate"};
 	
 	public static Map<String, String[]> getParamsMap(){
 		Map<String, String[]> paramMap = new HashMap<String, String[]>();

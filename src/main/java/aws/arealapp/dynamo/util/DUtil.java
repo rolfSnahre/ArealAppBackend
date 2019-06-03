@@ -17,7 +17,7 @@ import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.google.gson.Gson;
 
-import Interfaces.RequiredParams;
+import Interfaces.Params;
 
 public class DUtil {
 	public static Gson gson = new Gson();
@@ -33,23 +33,18 @@ public class DUtil {
 	}
 	
 	public static List<Map<String, Object>> itemCollectToMapList(ItemCollection itemColection){
-		List mapList = new ArrayList();
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		for(Object i : itemColection) {
 			mapList.add( ((Item) i).asMap());
 		}
 		return mapList;
 	}
 	
-	public static Item makeItemWithParams(Map input, RequiredParams paramObj) throws Exception{
+	public static Item makeItemWithParams(Map input, Params paramObj) throws Exception{
         
 		String[] params = paramObj.getStringParams();
 
 		Item item = new Item();
-		
-		Random r = new Random();
-		String pk = String.valueOf(r.nextLong());
-		
-		item.withPrimaryKey(paramObj.getPk(), pk);
         
     	for(String param : params) {
     		if(!input.containsKey(param)) {
@@ -79,9 +74,16 @@ public class DUtil {
     		if(!input.containsKey(param)) {
     			throw new Exception("Missing map param: " + param);
     		}
-    		item = item.withMap(param,(Map) input.get(param));
+    		item = item.withMap(param,(Map<String, ?>) input.get(param));
     	}
     	return item;		
+	}
+	
+	public static Item addRandomPK(Item item, Map input, Params paramsObj) {
+		Random r = new Random();
+		String pk = String.valueOf(r.nextLong());
+		
+		return item.withPrimaryKey(paramsObj.getPk(), pk);
 	}
 	
 

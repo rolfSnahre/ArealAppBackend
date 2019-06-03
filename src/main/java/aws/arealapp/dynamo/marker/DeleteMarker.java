@@ -20,7 +20,13 @@ public class DeleteMarker implements RequestHandler<String, Object> {
 		
 		DatabaseOperations databaseOp = new DatabaseOperations();
 		
-		return databaseOp.deleteObj(id, "Markers", new MarkersParams());
+		try {
+			return databaseOp.deleteObj(id, "Markers", new MarkersParams());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
         
 	} 
 }

@@ -14,7 +14,13 @@ public class DeleteArea implements RequestHandler<String, Object>{
 		
 		DatabaseOperations databaseOp = new DatabaseOperations();
 
-		return databaseOp.deleteObj(id, "Areas", new AreaParams());
+		try {
+			return databaseOp.deleteObj(id, "Areas", new AreaParams());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
 		
 	}
 	
