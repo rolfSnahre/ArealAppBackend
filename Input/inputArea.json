@@ -1,8 +1,13 @@
 {
-	"kontakt": "Bonn",
+	"contact": "Bonn",
 	"email": "email@gmail.com",
+	"category": "public",
+	"address": "lystården 39",
+	"coordinate": {
+		"longitude": 15,
+		"latitude":213
+	},
 	"number": "12345678",
-	"description": "blabla",
-	"date": "01.02.2015",
+	"info": "blabla",
 	"user": {}
 }

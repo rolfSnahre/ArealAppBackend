@@ -9,6 +9,8 @@ public class MarkersParams implements Params {
 public static final String pk = "markerId";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};
+	
+	public static final String[] reqParams = {"coordinates"};
 
 	public static final String[] stringParams  = 
 		{"pinColor"};
@@ -54,6 +56,12 @@ public static final String pk = "markerId";
 	public String[] getStringParams() {
 		// TODO Auto-generated method stub
 		return stringParams;
+	}
+
+	@Override
+	public String[] getReqParams() {
+		// TODO Auto-generated method stub
+		return reqParams;
 	}
 	
 }

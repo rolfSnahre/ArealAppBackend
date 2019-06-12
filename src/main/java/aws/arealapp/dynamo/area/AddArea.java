@@ -1,11 +1,17 @@
 package aws.arealapp.dynamo.area;
 
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import aws.arealapp.dynamo.model.*;
+import aws.arealapp.dynamo.util.DUtil;
 import aws.arealapp.dynamo.util.DatabaseOperations;
 
 import java.util.Map;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 
 public class AddArea implements RequestHandler<Map<String, Object>, Object> {
@@ -15,7 +21,28 @@ public class AddArea implements RequestHandler<Map<String, Object>, Object> {
 		
 		DatabaseOperations databaseOp = new DatabaseOperations();
 		
-		return databaseOp.addObjRandId(input, "Areas", new MarkersParams());
+		AreaParams aParams = new AreaParams();
+		try {
+
+			Item item = DUtil.makeItemWithParams(input, aParams);
+			if(!input.containsKey("areaId")) {
+				DUtil.addRandomPK(item, aParams);
+			}
+			
+			item.with("date", DUtil.getDate());
+			
+			Table table = DUtil.getTable("Areas");
+			
+			table.putItem(item);
+			
+			return item.asMap();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
+		
 		
 //        Table table = DUtil.getTable("areas");
         

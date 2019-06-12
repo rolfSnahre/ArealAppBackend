@@ -30,10 +30,7 @@ public class AddAd implements RequestHandler<Map<String, Object>, Object> {
 			
 			item.with(adParams.getPk(), adId);
 			
-			DateTime dateTime = DateTime.now(DateTimeZone.forOffsetHours(2));
-			String date = dateTime.getDayOfMonth() + "/" + dateTime.getMonthOfYear() + "/" + dateTime.getYear() + "-" + dateTime.getHourOfDay() + dateTime.getMinuteOfHour(); 
-			
-			item.withString("date", date);
+			item.withString("date", DUtil.getDate());
 			table.putItem(item);
 			
 			return item.asMap();

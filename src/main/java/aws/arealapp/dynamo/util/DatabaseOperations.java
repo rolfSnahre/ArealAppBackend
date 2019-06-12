@@ -13,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
-import com.google.gson.Gson;
+import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 
 import Interfaces.Params;
 import Interfaces.ParamsWithSK;
@@ -27,49 +27,50 @@ public class DatabaseOperations {
 		return addObj(pk, input, tableName, paramObj);
 	}
 		
-	public Object addObj(String pk, Map<String, Object> input, String tableName, Params paramObj) {
+	public Object addObj(String pk, Map<String, Object> input, String tableName, Params paramObj){
 		
 		Table table = DUtil.getTable(tableName);
 		
-		
-        
 		Item item = new Item().withPrimaryKey(paramObj.getPk(), pk);
 		
-        
-        String[] params = paramObj.getStringParams();
-        
-    	for(String param : params) {
-    		if(!input.containsKey(param)) {
-    			return "Missing string param: " + param;
-    		}
-    		item = item.withString(param,(String) input.get(param));
-    	}
-    	
-    	params = paramObj.getNumberParams();
-    	for(String param : params) {
-    		if(!input.containsKey(param)) {
-    			return "Missing number param: " + param;
-    		}
-    		item = item.withNumber(param,(Number) input.get(param));
-    	}
-    	
-    	params = paramObj.getBooleanParams();
-    	for(String param : params) {
-    		if(!input.containsKey(param)) {
-    			return "Missing boolean param: " + param;
-    		}
-    		item = item.withBoolean(param,(Boolean) input.get(param));
-    	}
-        
-    	params = paramObj.getMapParams();
-    	for(String param : params) {
-    		if(!input.containsKey(param)) {
-    			return "Missing map param: " + param;
-    		}
-    		item = item.withMap(param,(Map) input.get(param));
-    	}
+		
+		
+		
+//        String[] params = paramObj.getStringParams();
+//        
+//    	for(String param : paramObj.getReqParams()) {
+//    		if(!input.containsKey(param)) {
+//    			return "Missing string param: " + param;
+//    		}
+//    		item = item.withString(param,(String) input.get(param));
+//    	}
+//    	
+//    	params = paramObj.getNumberParams();
+//    	for(String param : params) {
+//    		if(!input.containsKey(param)) {
+//    			return "Missing number param: " + param;
+//    		}
+//    		item = item.withNumber(param,(Number) input.get(param));
+//    	}
+//    	
+//    	params = paramObj.getBooleanParams();
+//    	for(String param : params) {
+//    		if(!input.containsKey(param)) {
+//    			return "Missing boolean param: " + param;
+//    		}
+//    		item = item.withBoolean(param,(Boolean) input.get(param));
+//    	}
+//        
+//    	params = paramObj.getMapParams();
+//    	for(String param : params) {
+//    		if(!input.containsKey(param)) {
+//    			return "Missing map param: " + param;
+//    		}
+//    		item = item.withMap(param,(Map) input.get(param));
+//    	}
     	
     	try {
+    		item = DUtil.makeItemWithParams(input, paramObj);
     		PutItemOutcome outcome = table.putItem(item);
     		input.put(paramObj.getPk(), pk);
     		
@@ -80,7 +81,7 @@ public class DatabaseOperations {
     	}
 	}
 	
-	public Object  getAll(Map<String, Object> input, String tableName, Params paramObj) {
+	public Object getAll(Map<String, Object> input, String tableName, Params paramObj) {
 		
 		Table table = DUtil.getTable(tableName);
 
@@ -96,6 +97,15 @@ public class DatabaseOperations {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param id
+	 * @param tableName
+	 * @param paramObj
+	 * @return DeleteItemOutcome
+	 * @throws Exception
+	 */
 	public Object deleteObj(String id, String tableName, Params paramObj)throws Exception {
 		Table table = DUtil.getTable(tableName);
 
@@ -120,31 +130,33 @@ public class DatabaseOperations {
         return outcome;
 	}
 	
-	public Object getObj(String id, String tableName, Params paramObj) {
+	/**
+	 * 
+	 * @param id
+	 * @param tableName
+	 * @param paramObj
+	 * @return Object if found
+	 * @throws Exception if element not found
+	 */
+	public Object getObj(String id, String tableName, Params paramObj) throws Exception{
 		 
 		Table table = DUtil.getTable(tableName);
 
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(paramObj.getPk(), id);
         
-        try {
-            Item outcome = table.getItem(spec);
-            
-            if(outcome == null) {
-            	return "could not find objeckt";
-            }else {
-            	Map m = outcome.asMap();
+	    Item outcome = table.getItem(spec);
+	    
+	    if(outcome == null) {
+	    	throw new Exception("Could not find item");
+	    }else {
+	    	Map m = outcome.asMap();
+	
+	        return m;
+	    }
 
-                return m;
-            }
-            
-        }
-        catch (Exception e) {
-        	e.printStackTrace();
-            return e.getMessage();
-        }
 	}
 	
-	public Object getObjectWithKeyValue(String tableName, String key, String value) {
+	public Object getObjectsWithKeyValue(String tableName, String key, String value) {
 		Table table = DUtil.getTable("Ads");
 		
 		Map<String, Object> valueMap = new HashMap<String, Object>();
@@ -154,8 +166,10 @@ public class DatabaseOperations {
 		//lager scanne spesifikasjon objeckt
 		//Spesifiserer at man bare skal ha elementer med som har en parameter med navnet key og verdien value so er sendt inn
 		ScanSpec spec = new ScanSpec()
-				.withFilterExpression(key+"= :key")
+				.withFilterExpression("#1 = :key")
+				.withNameMap(new NameMap().with("#1",key))
 				.withValueMap(valueMap);
+		
 		
 		try{
 			//bruker scanne spesifikasjons objektet i scan opperasjon

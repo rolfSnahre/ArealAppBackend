@@ -14,6 +14,12 @@ public class GetAd implements RequestHandler<String, Object>{
 		
 		DatabaseOperations databaseOp = new DatabaseOperations();
 		
-		return databaseOp.getObj(id, "Ads", new AdParams());
+		try {
+			return databaseOp.getObj(id, "Ads", new AdParams());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
 	}
 }

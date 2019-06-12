@@ -5,6 +5,18 @@
 	"email": "Ole@gamil.com",
 	"number": "11112222",
 	"description": "beskrivelse",
-	"date": "04.07.2012",
-	"user": {}
+	"user": {
+		"user":"1",
+		"_55":{
+			"_55":"1",
+			"attributes":{
+				
+				"sub":"a75b06d2-3307-4421-8daf-342c70c469f9",
+				"sub2": "1"
+			}
+			
+		}
+		
+	}
+	
 }

@@ -12,7 +12,13 @@ public class GetArea implements RequestHandler<String, Object> {
 		
 		DatabaseOperations databaseObj = new DatabaseOperations();
 		
-		return databaseObj.getObj(id, "Areas", new AreaParams());
+		try {
+			return databaseObj.getObj(id, "Areas", new AreaParams());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return e.getMessage();
+		}
 		
 	}
 

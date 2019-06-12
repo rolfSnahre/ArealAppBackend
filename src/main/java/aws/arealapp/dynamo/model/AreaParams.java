@@ -9,9 +9,11 @@ public class AreaParams implements Params {
 	public static final String pk = "areaId";
 	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};
+	
+	public static final String[] reqParams = {"contact", "category", "address", "user", "coordinate"};
 
 	public static final String[] stringParams  = 
-		{"kontakt", "email", "number", "description", "date", "pinColor"};
+		{"soil", "sun", "email", "number", "contakt", "description", "pinColor", "category", "address"};
 	
 	public static final String[] numParams = {};
 	
@@ -61,6 +63,13 @@ public class AreaParams implements Params {
 	public String[] getStringParams() {
 		// TODO Auto-generated method stub
 		return stringParams;
+	}
+
+
+	@Override
+	public String[] getReqParams() {
+		// TODO Auto-generated method stub
+		return reqParams;
 	}
 	
 	

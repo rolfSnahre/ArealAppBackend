@@ -12,7 +12,10 @@ public class AdParams implements ParamsWithSK {
 	
 	public static final String sk = "date";
 	
+	
 	public static final String[] paramTypes = {"String", "Number", "Boolean", "Map"};
+
+	public static final String[] reqParams = {"category", "place", "contact", "email", "number", "description"};
 
 	public static final String[] stringParams  = 
 		{"category", "place", "contact", "email", "number", "description"};
@@ -69,6 +72,13 @@ public class AdParams implements ParamsWithSK {
 	public String[] getStringParams() {
 		// TODO Auto-generated method stub
 		return stringParams;
+	}
+
+
+	@Override
+	public String[] getReqParams() {
+		// TODO Auto-generated method stub
+		return reqParams;
 	}
 	
 	
